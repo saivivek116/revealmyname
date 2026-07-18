@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   maxGuesses,
   evaluateGuess,
@@ -109,9 +110,9 @@ export default function WordleApp() {
   return (
     <div className="wordle">
       <header className="wordle-header">
-        <a className="wordle-home" href="/">
+        <Link className="wordle-home" to="/">
           ← Games
-        </a>
+        </Link>
         <h1>Name Wordle</h1>
         <p className="wordle-subtitle">
           Guess the {answer.length}-letter name in {maxGuesses(answer)} tries

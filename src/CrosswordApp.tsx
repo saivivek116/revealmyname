@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import CrosswordGrid from './components/CrosswordGrid';
 import QuestionCarousel from './components/QuestionCarousel';
 import { defaultPuzzle, getFinalName } from './config/puzzle';
@@ -20,9 +21,9 @@ export default function CrosswordApp() {
   return (
     <div className="app">
       <header className="header">
-        <a className="home-link" href="/">
+        <Link className="home-link" to="/">
           ← Games
-        </a>
+        </Link>
         <h1 className="title">{puzzle.title}</h1>
         {puzzle.subtitle && <p className="subtitle">{puzzle.subtitle}</p>}
       </header>

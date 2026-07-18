@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './App.css'
 
 export default function App() {
@@ -9,7 +10,7 @@ export default function App() {
       </header>
 
       <div className="home-cards">
-        <a className="home-card home-card--wordle" href="/wordle">
+        <Link className="home-card home-card--wordle" to="/wordle">
           <span className="home-card-tiles" aria-hidden="true">
             <span className="t g">N</span>
             <span className="t y">A</span>
@@ -19,9 +20,9 @@ export default function App() {
           <h2>Name Wordle</h2>
           <p>Guess the hidden name in 6 tries. Green means right spot, yellow means wrong spot.</p>
           <span className="home-card-cta">Play →</span>
-        </a>
+        </Link>
 
-        <a className="home-card home-card--crossword" href="/crossword">
+        <Link className="home-card home-card--crossword" to="/crossword">
           <span className="home-card-tiles" aria-hidden="true">
             <span className="t c">R</span>
             <span className="t c">E</span>
@@ -31,7 +32,7 @@ export default function App() {
           <h2>Crossword Reveal</h2>
           <p>Answer 7 clues to light up the letters that spell the hidden name.</p>
           <span className="home-card-cta">Play →</span>
-        </a>
+        </Link>
       </div>
     </div>
   )
