@@ -1,0 +1,43 @@
+:root {
+  /* Palette — peacock teal ink, rice-paper ground, silk magenta actions,
+     turmeric gold reserved for the reveal */
+  --paper: #faf6ec;
+  --paper-deep: #f1ead9;
+  --ink: #10454d;
+  --ink-soft: #4f6d72;
+  --silk: #b81d5b;
+  --silk-deep: #931548;
+  --gold: #e8a517;
+  --gold-glow: #ffd76a;
+  --cell-line: #c9bfa6;
+  --white: #fffdf8;
+
+  --display: 'Baloo 2', 'Trebuchet MS', sans-serif;
+  --body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--paper);
+  background-image: radial-gradient(circle at 50% -10%, #fdf9f0 0%, var(--paper) 60%);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+input,
+button {
+  font: inherit;
+}

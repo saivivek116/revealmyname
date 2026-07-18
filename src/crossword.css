@@ -1,0 +1,437 @@
+/* Crossword page — recreated styles for the original "Reveal My Name"
+   crossword (the source App.css predates version control and was lost). */
+
+.app {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 12px 16px 20px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Header ---------- */
+
+.header {
+  text-align: center;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.home-link {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.home-link:hover {
+  color: var(--ink);
+}
+
+.title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.9rem, 6vw, 2.6rem);
+  line-height: 1.1;
+  margin: 0;
+  color: var(--ink);
+}
+
+.subtitle {
+  margin: 6px auto 0;
+  max-width: 34ch;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+/* ---------- Layout ---------- */
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  align-items: start;
+  flex: 1;
+}
+
+@media (min-width: 760px) {
+  .layout {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 32px;
+  }
+}
+
+/* Grid children must be allowed to shrink, or the carousel's slides force
+   the question column wide and crush the puzzle grid. */
+.layout > * {
+  min-width: 0;
+}
+
+/* ---------- Grid ---------- */
+
+.board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.grid {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  max-width: 460px;
+}
+
+.cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(0.9rem, 3vw, 1.3rem);
+  border-radius: 6px;
+  user-select: none;
+}
+
+.cell--void {
+  background: transparent;
+}
+
+.cell--blank {
+  background: var(--white);
+  border: 1.5px solid var(--cell-line);
+}
+
+/* Cells of the question currently shown in the carousel — shows the
+   word's length and where it sits in the grid */
+.cell--focus {
+  outline: 2px solid var(--silk);
+  outline-offset: -1px;
+}
+
+.cell--focus.cell--blank {
+  background: #fdeef4;
+  border-color: var(--silk);
+}
+
+.cell--solved {
+  background: var(--ink);
+  color: var(--white);
+  border: 1.5px solid var(--ink);
+  animation: cell-in 300ms ease-out;
+}
+
+@keyframes cell-in {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+}
+
+.cell--reveal {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+  animation: cell-glow 900ms ease both;
+}
+
+@keyframes cell-glow {
+  0% {
+    background: var(--ink);
+    color: var(--white);
+    box-shadow: none;
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    background: var(--gold);
+    color: var(--ink);
+    box-shadow: 0 0 18px var(--gold-glow);
+  }
+}
+
+/* ---------- Progress & reveal banner ---------- */
+
+.progress {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.progress-count {
+  font-family: var(--display);
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.reveal-banner {
+  text-align: center;
+}
+
+.reveal-label {
+  margin: 0 0 4px;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.reveal-name {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.reveal-letter {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  color: var(--ink);
+  background: var(--gold);
+  border-radius: 8px;
+  padding: 2px 10px;
+  box-shadow: 0 0 16px var(--gold-glow);
+  opacity: 0;
+  animation: letter-in 400ms ease forwards;
+}
+
+@keyframes letter-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Question carousel ---------- */
+
+.carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* The track spans the carousel's full width and slides are sized by
+   grid-auto-columns: a percentage flex-basis inside a flex-squeezed track
+   resolves against the pre-flex width in Chromium, making slides wider
+   than the track and clipping the card. Arrows are overlays (hidden on
+   phones, where swipe + dots are the interaction) so they can never eat
+   into the track's width. */
+
+.carousel-row {
+  position: relative;
+}
+
+.carousel-arrow {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  border: none;
+  background: transparent;
+  color: var(--silk);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.carousel-arrow--prev {
+  left: 0;
+}
+
+.carousel-arrow--next {
+  right: 0;
+}
+
+@media (min-width: 600px) {
+  .carousel-row {
+    padding: 0 44px;
+  }
+
+  .carousel-arrow {
+    display: block;
+  }
+}
+
+.carousel-arrow:hover:not(:disabled) {
+  background: var(--paper-deep);
+}
+
+.carousel-arrow:disabled {
+  color: var(--cell-line);
+  cursor: default;
+}
+
+.carousel-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-slide {
+  min-width: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  padding: 2px;
+  display: flex;
+}
+
+.carousel-slide > .card {
+  flex: 1;
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--silk);
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.carousel-dot--active {
+  background: var(--silk);
+}
+
+.carousel-dot--solved {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+
+/* ---------- Question cards ---------- */
+
+.card {
+  display: flex;
+  gap: 12px;
+  background: var(--white);
+  border: 1.5px solid var(--cell-line);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(16, 69, 77, 0.06);
+}
+
+.card--wrong {
+  animation: card-shake 500ms ease;
+  border-color: var(--silk);
+}
+
+@keyframes card-shake {
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+.card--solved {
+  background: var(--paper-deep);
+}
+
+.card-number {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--silk);
+  color: var(--white);
+  font-family: var(--display);
+  font-weight: 700;
+}
+
+.card-number--solved {
+  background: var(--ink);
+}
+
+.card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-clue {
+  margin: 2px 0 10px;
+  font-weight: 600;
+}
+
+.card-answer {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+
+.card-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-input {
+  min-width: 0;
+  border: 1.5px solid var(--cell-line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  min-height: 44px;
+  background: var(--paper);
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.card-input:focus {
+  outline: 2px solid var(--silk);
+  outline-offset: 1px;
+  border-color: var(--silk);
+}
+
+.card-check {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  min-height: 44px;
+  background: var(--silk);
+  color: var(--white);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.card-check:hover:not(:disabled) {
+  background: var(--silk-deep);
+}
+
+.card-check:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.card-hint {
+  margin: 8px 0 0;
+  color: var(--silk-deep);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
