@@ -2,12 +2,45 @@
    crossword (the source App.css predates version control and was lost). */
 
 .app {
+  /* Opacity of the paper-coloured wash laid over the background artwork.
+     Nudge this to taste — lower = more vivid scene, higher = softer. */
+  --bg-scrim: rgba(250, 246, 236, 0.7);
+
   max-width: 1000px;
   margin: 0 auto;
   padding: 12px 16px 20px;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 0;
+}
+
+/* ---------- Background artwork (Krishna & Arjuna, Kurukshetra dawn) ---------- */
+
+/* A fixed full-viewport layer sitting behind the crossword content. Uses a
+   positioned element rather than `background-attachment: fixed` to avoid the
+   iOS Safari repaint bugs, and stays scoped to the crossword route. */
+.app-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: linear-gradient(var(--bg-scrim), var(--bg-scrim)),
+    url('/desktopm.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 759px) {
+  .app {
+    --bg-scrim: rgba(250, 246, 236, 0.76);
+  }
+
+  .app-bg {
+    background-image: linear-gradient(var(--bg-scrim), var(--bg-scrim)),
+      url('/mobilem.png');
+  }
 }
 
 /* ---------- Header ---------- */
@@ -25,6 +58,7 @@
   line-height: 1.1;
   margin: 0;
   color: var(--ink);
+  text-shadow: 0 1px 10px rgba(250, 246, 236, 0.9);
 }
 
 .subtitle {
@@ -32,6 +66,7 @@
   max-width: 34ch;
   color: var(--ink-soft);
   font-size: 0.95rem;
+  text-shadow: 0 1px 8px rgba(250, 246, 236, 0.9);
 }
 
 /* ---------- Layout ---------- */
@@ -169,6 +204,7 @@
 .progress {
   margin: 0;
   color: var(--ink-soft);
+  text-shadow: 0 1px 8px rgba(250, 246, 236, 0.9);
 }
 
 .progress-count {
@@ -185,6 +221,7 @@
   margin: 0 0 4px;
   color: var(--ink-soft);
   font-size: 0.95rem;
+  text-shadow: 0 1px 8px rgba(250, 246, 236, 0.9);
 }
 
 .reveal-name {

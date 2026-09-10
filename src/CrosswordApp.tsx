@@ -20,6 +20,13 @@ export default function CrosswordApp() {
   const activeWordId = puzzle.words[activeIndex]?.id;
   const finaleImg = `${import.meta.env.BASE_URL}arjunasubhadra.jpeg`;
 
+  // Preload the background artwork so the first paint isn't blank
+  useEffect(() => {
+    const wide = window.matchMedia('(min-width: 760px)').matches;
+    const img = new Image();
+    img.src = `${import.meta.env.BASE_URL}${wide ? 'desktopm' : 'mobilem'}.png`;
+  }, []);
+
   // Preload the photo as soon as the puzzle is solved so the fade never shows a
   // half-loaded image.
   useEffect(() => {
@@ -51,6 +58,7 @@ export default function CrosswordApp() {
 
   return (
     <div className="app">
+      <div className="app-bg" aria-hidden="true" />
       <header className="header">
         <h1 className="title">{puzzle.title}</h1>
         {puzzle.subtitle && <p className="subtitle">{puzzle.subtitle}</p>}
