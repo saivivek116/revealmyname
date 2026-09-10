@@ -22,7 +22,7 @@ export default function App() {
           <span className="home-card-cta">Play →</span>
         </Link>
 
-        <Link className="home-card home-card--crossword" to="/crossword">
+        <Link className="home-card home-card--crossword" to="/">
           <span className="home-card-tiles" aria-hidden="true">
             <span className="t c">R</span>
             <span className="t c">E</span>

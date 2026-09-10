@@ -110,7 +110,7 @@ export default function WordleApp() {
   return (
     <div className="wordle">
       <header className="wordle-header">
-        <Link className="wordle-home" to="/">
+        <Link className="wordle-home" to="/games">
           ← Games
         </Link>
         <h1>Name Wordle</h1>

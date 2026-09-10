@@ -37,70 +37,92 @@ export interface GridCell {
  */
 export const defaultPuzzle: PuzzleConfig = {
   title: 'Reveal My Name',
-  subtitle: 'Answer all 7 questions to light up the hidden name',
+  subtitle: 'Answer all 9 questions to light up the hidden name',
+  // Reveal letters, read in word order, spell ABHIMANYU. The grid interlocks as a
+  // balanced crossword — 5 across (BHISHMA, BHIMA, INDRA, VYASA, DRONA) and
+  // 4 down (SUBHADRA, HANUMAN, VIRATA, UTTARA) — with every pair of words
+  // sharing only a real crossing cell (no side-by-side or head-to-tail adjacency).
   words: [
     {
-      id: 'peacock',
-      clue: 'The national bird of India, famous for its dance in the rain',
-      answer: 'PEACOCK',
+      id: 'subhadra',
+      clue: "Krishna's younger sister, given in marriage to Arjuna",
+      answer: 'SUBHADRA',
       direction: 'down',
-      row: 1,
-      col: 0,
-      revealIndex: 6, // K
+      row: 0,
+      col: 4,
+      revealIndex: 7, // A
     },
     {
-      id: 'charminar',
-      clue: 'Iconic Hyderabad monument with four grand minarets',
-      answer: 'CHARMINAR',
+      id: 'bhima',
+      clue: "The second Pandava, whose mace shattered Duryodhana's thigh",
+      answer: 'BHIMA',
+      direction: 'across',
+      row: 2,
+      col: 4,
+      revealIndex: 0, // B — shared with SUBHADRA's third letter
+    },
+    {
+      id: 'hanuman',
+      clue: "The vanara deity who blazed on Arjuna's chariot banner at Kurukshetra",
+      answer: 'HANUMAN',
+      direction: 'down',
+      row: 1,
+      col: 8,
+      revealIndex: 0, // H
+    },
+    {
+      id: 'indra',
+      clue: 'King of the devas and the divine father of Arjuna',
+      answer: 'INDRA',
       direction: 'across',
       row: 4,
       col: 0,
-      revealIndex: 8, // R
+      revealIndex: 0, // I
     },
     {
-      id: 'biryani',
-      clue: "Hyderabad's world-famous fragrant rice dish",
-      answer: 'BIRYANI',
-      direction: 'down',
-      row: 2,
-      col: 3,
-      revealIndex: 1, // I
-    },
-    {
-      id: 'jasmine',
-      clue: 'Fragrant white flower — "malle puvvu" in Telugu',
-      answer: 'JASMINE',
+      id: 'bhishma',
+      clue: 'The Kuru grandsire who chose to fall on a bed of arrows',
+      answer: 'BHISHMA',
       direction: 'across',
-      row: 6,
-      col: 2,
-      revealIndex: 2, // S
-    },
-    {
-      id: 'chess',
-      clue: 'Board game believed to have originated in ancient India',
-      answer: 'CHESS',
-      direction: 'across',
-      row: 1,
-      col: 5,
-      revealIndex: 1, // H
-    },
-    {
-      id: 'mango',
-      clue: "India's national fruit, the king of fruits",
-      answer: 'MANGO',
-      direction: 'down',
-      row: 6,
-      col: 5,
-      revealIndex: 2, // N
-    },
-    {
-      id: 'veena',
-      clue: 'Classical string instrument held by Goddess Saraswati',
-      answer: 'VEENA',
-      direction: 'down',
       row: 0,
-      col: 7,
-      revealIndex: 4, // A
+      col: 1,
+      revealIndex: 5, // M
+    },
+    {
+      id: 'virata',
+      clue: 'The Pandavas spent their 13th year of exile in disguise in his kingdom?King name?',
+      answer: 'VIRATA',
+      direction: 'down',
+      row: 3,
+      col: 0,
+      revealIndex: 5, // A
+    },
+    {
+      id: 'drona',
+      clue: 'Who was the commander associated with the Chakravyuha formation?',
+      answer: 'DRONA',
+      direction: 'across',
+      row: 9,
+      col: 2,
+      revealIndex: 3, // N
+    },
+    {
+      id: 'vyasa',
+      clue: 'The sage who dictated the epic of the Bharatas to Ganesha, who set it down as scribe',
+      answer: 'VYASA',
+      direction: 'across',
+      row: 7,
+      col: 2,
+      revealIndex: 1, // Y
+    },
+    {
+      id: 'uttara',
+      clue: 'Daughter of King Virata',
+      answer: 'UTTARA',
+      direction: 'down',
+      row: 4,
+      col: 6,
+      revealIndex: 0, // U
     },
   ],
 };

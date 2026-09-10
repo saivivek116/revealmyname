@@ -21,7 +21,7 @@ export default function CrosswordApp() {
   return (
     <div className="app">
       <header className="header">
-        <Link className="home-link" to="/">
+        <Link className="home-link" to="/games">
           ← Games
         </Link>
         <h1 className="title">{puzzle.title}</h1>

@@ -10,9 +10,10 @@ export default function Router() {
     <BrowserRouter>
       <Suspense fallback={null}>
         <Routes>
-          <Route path="/" element={<App />} />
+          <Route path="/" element={<CrosswordApp />} />
+          <Route path="/games" element={<App />} />
           <Route path="/wordle" element={<WordleApp />} />
-          <Route path="/crossword" element={<CrosswordApp />} />
+          <Route path="/crossword" element={<Navigate to="/" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
