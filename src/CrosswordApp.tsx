@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import CrosswordGrid from './components/CrosswordGrid';
 import QuestionCarousel from './components/QuestionCarousel';
 import { defaultPuzzle, getFinalName, pickWordForCell } from './config/puzzle';
@@ -11,9 +11,31 @@ export default function CrosswordApp() {
   const [activeIndex, setActiveIndex] = useState(0);
   // Bumped on each grid tap so the carousel scrolls even to the current slide
   const [jumpTo, setJumpTo] = useState<{ index: number } | null>(null);
+  // True once the last letter of the name has finished animating in — then the
+  // Arjuna–Subhadra photo fades in over everything.
+  const [finaleReady, setFinaleReady] = useState(false);
   const finalName = useMemo(() => getFinalName(puzzle), []);
   const revealed = solvedIds.size === puzzle.words.length;
+  const lastLetterIndex = finalName.length - 1;
   const activeWordId = puzzle.words[activeIndex]?.id;
+  const finaleImg = `${import.meta.env.BASE_URL}arjunasubhadra.jpeg`;
+
+  // Preload the photo as soon as the puzzle is solved so the fade never shows a
+  // half-loaded image.
+  useEffect(() => {
+    if (!revealed) return;
+    const img = new Image();
+    img.src = finaleImg;
+  }, [revealed, finaleImg]);
+
+  // Fallback in case the last letter's `animationend` never fires (e.g. the tab
+  // was backgrounded during the reveal).
+  useEffect(() => {
+    if (!revealed) return;
+    const ms = (puzzle.words.length * 0.35 + (finalName.length - 1) * 0.15 + 0.4) * 1000 + 150;
+    const t = setTimeout(() => setFinaleReady(true), ms);
+    return () => clearTimeout(t);
+  }, [revealed, finalName.length]);
 
   function handleSolve(id: string) {
     setSolvedIds((prev) => new Set(prev).add(id));
@@ -52,6 +74,9 @@ export default function CrosswordApp() {
                     key={i}
                     className="reveal-letter"
                     style={{ animationDelay: `${puzzle.words.length * 0.35 + i * 0.15}s` }}
+                    onAnimationEnd={
+                      i === lastLetterIndex ? () => setFinaleReady(true) : undefined
+                    }
                   >
                     {letter}
                   </span>
@@ -78,6 +103,26 @@ export default function CrosswordApp() {
           />
         </section>
       </main>
+
+      {finaleReady && (
+        <div className="finale">
+          <img
+            className="finale-img"
+            src={finaleImg}
+            alt="Arjuna and Subhadra, the parents of Abhimanyu"
+          />
+          <div className="finale-content" role="status">
+            <p className="finale-label">The name is</p>
+            <div className="finale-name" aria-label={finalName}>
+              {finalName.split('').map((letter, i) => (
+                <span key={i} className="finale-letter">
+                  {letter}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
