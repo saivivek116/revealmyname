@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import CrosswordGrid from './components/CrosswordGrid';
 import QuestionCarousel from './components/QuestionCarousel';
-import { defaultPuzzle, getFinalName } from './config/puzzle';
+import { defaultPuzzle, getFinalName, pickWordForCell } from './config/puzzle';
 import './crossword.css';
 
 const puzzle = defaultPuzzle;
@@ -10,6 +9,8 @@ const puzzle = defaultPuzzle;
 export default function CrosswordApp() {
   const [solvedIds, setSolvedIds] = useState<Set<string>>(new Set());
   const [activeIndex, setActiveIndex] = useState(0);
+  // Bumped on each grid tap so the carousel scrolls even to the current slide
+  const [jumpTo, setJumpTo] = useState<{ index: number } | null>(null);
   const finalName = useMemo(() => getFinalName(puzzle), []);
   const revealed = solvedIds.size === puzzle.words.length;
   const activeWordId = puzzle.words[activeIndex]?.id;
@@ -18,12 +19,17 @@ export default function CrosswordApp() {
     setSolvedIds((prev) => new Set(prev).add(id));
   }
 
+  function handleSelectWord(wordIds: string[]) {
+    const word = pickWordForCell(wordIds, puzzle.words, solvedIds);
+    const idx = word ? puzzle.words.indexOf(word) : -1;
+    if (idx < 0) return;
+    setActiveIndex(idx);
+    setJumpTo({ index: idx });
+  }
+
   return (
     <div className="app">
       <header className="header">
-        <Link className="home-link" to="/games">
-          ← Games
-        </Link>
         <h1 className="title">{puzzle.title}</h1>
         {puzzle.subtitle && <p className="subtitle">{puzzle.subtitle}</p>}
       </header>
@@ -35,6 +41,7 @@ export default function CrosswordApp() {
             solvedIds={solvedIds}
             revealed={revealed}
             activeWordId={revealed ? undefined : activeWordId}
+            onSelectWord={handleSelectWord}
           />
           {revealed ? (
             <div className="reveal-banner" role="status">
@@ -65,6 +72,7 @@ export default function CrosswordApp() {
           <QuestionCarousel
             words={puzzle.words}
             solvedIds={solvedIds}
+            jumpTo={jumpTo}
             onSolve={handleSolve}
             onActiveChange={setActiveIndex}
           />

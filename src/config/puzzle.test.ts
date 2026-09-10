@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { cellKey, cellsOf, defaultPuzzle, getFinalName, validateConfig } from './puzzle';
+import {
+  cellKey,
+  cellsOf,
+  defaultPuzzle,
+  getFinalName,
+  pickWordForCell,
+  validateConfig,
+} from './puzzle';
 
 describe('defaultPuzzle', () => {
   it('has a valid, non-conflicting grid', () => {
@@ -30,6 +37,21 @@ describe('defaultPuzzle', () => {
     const across = defaultPuzzle.words.filter((w) => w.direction === 'across').length;
     expect(across).toBeGreaterThanOrEqual(4);
     expect(defaultPuzzle.words.length - across).toBeGreaterThanOrEqual(4);
+  });
+
+  it('crossing cell picks the unsolved word, preferring across', () => {
+    // row 2 / col 4: BHIMA (across) crosses SUBHADRA (down)
+    const both = ['bhima', 'subhadra'];
+    const words = defaultPuzzle.words;
+
+    // neither solved -> across wins the tie
+    expect(pickWordForCell(both, words, new Set())?.id).toBe('bhima');
+    // across solved -> jump to the still-unsolved down word
+    expect(pickWordForCell(both, words, new Set(['bhima']))?.id).toBe('subhadra');
+    // both solved -> still navigable, prefer across
+    expect(pickWordForCell(both, words, new Set(both))?.id).toBe('bhima');
+    // single-word cell
+    expect(pickWordForCell(['indra'], words, new Set())?.id).toBe('indra');
   });
 
   it('words only touch at real crossings (no side-by-side or head-to-tail runs)', () => {

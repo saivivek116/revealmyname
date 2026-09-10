@@ -5,11 +5,23 @@ import type { PuzzleWord } from '../config/puzzle';
 interface Props {
   words: PuzzleWord[];
   solvedIds: Set<string>;
+  /**
+   * A one-shot request to scroll to a slide (e.g. a grid cell tap). Pass a fresh
+   * object each time — the carousel scrolls whenever the reference changes, so
+   * scroll-position echoes never feed back into it.
+   */
+  jumpTo?: { index: number } | null;
   onSolve: (id: string) => void;
   onActiveChange?: (index: number) => void;
 }
 
-export default function QuestionCarousel({ words, solvedIds, onSolve, onActiveChange }: Props) {
+export default function QuestionCarousel({
+  words,
+  solvedIds,
+  jumpTo,
+  onSolve,
+  onActiveChange,
+}: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const prevSolvedCount = useRef(solvedIds.size);
@@ -19,11 +31,23 @@ export default function QuestionCarousel({ words, solvedIds, onSolve, onActiveCh
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
-  function scrollTo(index: number) {
+  // Follow an externally requested slide (grid tap). The jump is instant, not a
+  // smooth scroll: a smooth scroll fires a stream of intermediate scroll events
+  // that would march `active` (and the grid highlight) through every question in
+  // between before landing. An instant scroll fires one event, at the target.
+  useEffect(() => {
+    if (jumpTo) scrollTo(jumpTo.index, false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jumpTo]);
+
+  function scrollTo(index: number, smooth = true) {
     const track = trackRef.current;
     if (!track) return;
     const clamped = Math.max(0, Math.min(words.length - 1, index));
-    track.scrollTo({ left: clamped * track.clientWidth, behavior: 'smooth' });
+    track.scrollTo({
+      left: clamped * track.clientWidth,
+      behavior: smooth ? 'smooth' : 'auto',
+    });
   }
 
   function handleScroll() {

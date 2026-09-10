@@ -137,6 +137,24 @@ export function cellsOf(word: PuzzleWord): Array<{ row: number; col: number; let
 
 export const cellKey = (row: number, col: number) => `${row},${col}`;
 
+/**
+ * Which word a click on a cell (given its `wordIds`) should jump to: prefer a
+ * still-unsolved word, break ties toward `across`. When every word through the
+ * cell is solved, still return one (prefer across) so solved cells keep
+ * navigating to their card.
+ */
+export function pickWordForCell(
+  wordIds: string[],
+  words: PuzzleWord[],
+  solvedIds: ReadonlySet<string>,
+): PuzzleWord | undefined {
+  const inCell = words.filter((w) => wordIds.includes(w.id));
+  const pool = inCell.some((w) => !solvedIds.has(w.id))
+    ? inCell.filter((w) => !solvedIds.has(w.id))
+    : inCell;
+  return pool.find((w) => w.direction === 'across') ?? pool[0];
+}
+
 export interface BuiltGrid {
   rows: number;
   cols: number;
